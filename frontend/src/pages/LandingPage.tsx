@@ -3,9 +3,7 @@ import { useAuth } from '../store/auth'
 import { Button } from '../components/ui/Button'
 import {
   Shield,
-  Users,
   Clock,
-  CheckCircle,
   Lock,
   Eye,
   BarChart3,
@@ -26,6 +24,7 @@ export function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  const [countersAnimated, setCountersAnimated] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +33,67 @@ export function LandingPage() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (countersAnimated) return
+
+    const handleScroll = () => {
+      const statsSection = document.querySelector('#stats-section')
+      if (statsSection) {
+        const rect = statsSection.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+
+        if (isVisible && !countersAnimated) {
+          const counters = document.querySelectorAll('.counter')
+
+          counters.forEach((counter) => {
+            const element = counter as HTMLElement
+            const target = parseFloat(element.getAttribute('data-target') || '0')
+            const duration = 2000
+            const increment = target / (duration / 16)
+            let current = 0
+
+            const updateCounter = () => {
+              current += increment
+              if (current < target) {
+                if (target % 1 === 0) {
+                  if (target === 24) {
+                    element.textContent = Math.floor(current) + '/7'
+                  } else {
+                    element.textContent = Math.floor(current).toLocaleString()
+                  }
+                } else {
+                  element.textContent = current.toFixed(1) + '%'
+                }
+                requestAnimationFrame(updateCounter)
+              } else {
+                if (target % 1 === 0) {
+                  if (target === 24) {
+                    element.textContent = target + '/7'
+                  } else {
+                    element.textContent = target.toLocaleString() + '+'
+                  }
+                } else {
+                  element.textContent = target + '%'
+                }
+              }
+            }
+
+            updateCounter()
+          })
+
+          setCountersAnimated(true)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check on mount
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [countersAnimated, setCountersAnimated])
 
   if (!auth.isHydrated) {
     return <div className="flex min-h-screen items-center justify-center text-sm text-gray-600">Loading…</div>
@@ -45,56 +105,56 @@ export function LandingPage() {
   const features = [
     {
       icon: Shield,
-      title: 'Advanced Proctoring',
-      description: 'Real-time monitoring with AI-powered violation detection to ensure exam integrity.'
+      title: 'Secure Proctoring',
+      description: 'Real-time monitoring with comprehensive violation detection to ensure exam integrity.'
     },
     {
       icon: Lock,
-      title: 'Secure Environment',
-      description: 'Browser lockdown, tab switching detection, and comprehensive security measures.'
+      title: 'Browser Security',
+      description: 'Advanced browser controls and tab switching prevention for secure testing environment.'
     },
     {
       icon: Eye,
-      title: 'Live Monitoring',
-      description: 'Teachers can monitor students in real-time with instant violation alerts.'
+      title: 'Live Supervision',
+      description: 'Teachers can monitor students in real-time with instant behavioral alerts.'
     },
     {
       icon: BarChart3,
-      title: 'Detailed Analytics',
-      description: 'Comprehensive reports and insights on exam performance and student progress.'
+      title: 'Performance Analytics',
+      description: 'Detailed reports and insights on exam performance and student progress.'
     },
     {
       icon: Clock,
-      title: 'Flexible Timing',
-      description: 'Customizable exam durations with automatic submission and time tracking.'
+      title: 'Time Management',
+      description: 'Flexible exam scheduling with automatic submission and precise time tracking.'
     },
     {
       icon: Award,
-      title: 'Instant Grading',
-      description: 'Automatic grading for multiple-choice questions with immediate results.'
+      title: 'Quick Results',
+      description: 'Efficient grading system with immediate feedback for multiple-choice assessments.'
     }
   ]
 
   const faqs = [
     {
       question: 'How secure is the examination platform?',
-      answer: 'SMESH uses enterprise-grade security with end-to-end encryption, real-time proctoring, and comprehensive violation detection to ensure exam integrity.'
+      answer: 'SMESH uses enterprise-grade security with comprehensive monitoring and violation detection to ensure exam integrity and academic honesty.'
     },
     {
-      question: 'Can I create different types of questions?',
-      answer: 'Yes, teachers can create multiple-choice, true/false, and short-answer questions with customizable point values and explanations.'
+      question: 'What question types are supported?',
+      answer: 'Teachers can create multiple-choice, true/false, and short-answer questions with customizable point values and detailed explanations.'
     },
     {
-      question: 'What happens if a student violates exam rules?',
-      answer: 'The system automatically detects and logs violations like tab switching or copying. Teachers receive real-time alerts and can take appropriate action.'
+      question: 'How are exam violations handled?',
+      answer: 'The system detects and logs violations such as tab switching or unauthorized copying. Teachers receive immediate alerts and can review incident reports.'
     },
     {
-      question: 'Is the platform mobile-friendly?',
-      answer: 'While exams are best taken on desktop for security, the platform is fully responsive for dashboard access and exam management on any device.'
+      question: 'Is the platform accessible on mobile devices?',
+      answer: 'While exams are optimized for desktop security, the platform is fully responsive for dashboard access and exam management on any device.'
     },
     {
-      question: 'How does real-time monitoring work?',
-      answer: 'Students connect via secure WebSocket connections that monitor browser activity, send heartbeats, and report any suspicious behavior instantly.'
+      question: 'How does the monitoring system work?',
+      answer: 'Students connect through secure channels that monitor browser activity and track exam progress, providing real-time supervision capabilities.'
     }
   ]
 
@@ -105,30 +165,30 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-white" style={{ scrollBehavior: 'smooth' }}>
       {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-        ? 'bg-[#071B3A] border-b border-[#0a2347] shadow-lg'
-        : 'bg-gradient-to-br from-[#071B3A] to-[#0a2347] border-b border-transparent'
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-lg ${scrolled
+        ? 'bg-[#051629]/90 border-b border-[#071B3A]/60 shadow-lg'
+        : 'bg-transparent border-b border-transparent'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className={`text-2xl font-bold [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif] ${scrolled ? 'text-white' : 'text-white'
-                }`}>
+              <div className={`text-2xl font-light tracking-tight ${scrolled ? 'text-white' : 'text-white'
+                }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 SMESH
               </div>
-              <span className={`ml-2 text-sm hidden sm:inline ${scrolled ? 'text-gray-400' : 'text-gray-300'
-                }`}>
-                Exam monitoring system
+              <span className={`ml-3 text-sm font-medium hidden sm:inline ${scrolled ? 'text-gray-300' : 'text-gray-300'
+                }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Secure Examination Platform
               </span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className={`transition-colors ${scrolled ? 'text-gray-400 hover:text-white' : 'text-gray-300 hover:text-white'
-                }`}>Features</a>
-              <a href="#faq" className={`transition-colors ${scrolled ? 'text-gray-400 hover:text-white' : 'text-gray-300 hover:text-white'
-                }`}>FAQ</a>
-              <a href="#contact" className={`transition-colors ${scrolled ? 'text-gray-400 hover:text-white' : 'text-gray-300 hover:text-white'
-                }`}>Contact</a>
+              <a href="#features" className={`font-medium transition-colors ${scrolled ? 'text-gray-300 hover:text-white' : 'text-gray-300 hover:text-white'
+                }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Features</a>
+              <a href="#faq" className={`font-medium transition-colors ${scrolled ? 'text-gray-300 hover:text-white' : 'text-gray-300 hover:text-white'
+                }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>FAQ</a>
+              <a href="#contact" className={`font-medium transition-colors ${scrolled ? 'text-gray-300 hover:text-white' : 'text-gray-300 hover:text-white'
+                }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</a>
               {isAuthed ? (
                 <Button onClick={() => nav(dash)}>Dashboard</Button>
               ) : (
@@ -157,11 +217,11 @@ export function LandingPage() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="md:hidden bg-[#051629]/95 backdrop-blur-lg border-t border-[#071B3A]/60">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#features" className="block px-3 py-2 text-gray-700 hover:text-[#071B3A]">Features</a>
-              <a href="#faq" className="block px-3 py-2 text-gray-700 hover:text-[#071B3A]">FAQ</a>
-              <a href="#contact" className="block px-3 py-2 text-gray-700 hover:text-[#071B3A]">Contact</a>
+              <a href="#features" className="block px-3 py-2 font-medium text-gray-300 hover:text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Features</a>
+              <a href="#faq" className="block px-3 py-2 font-medium text-gray-300 hover:text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>FAQ</a>
+              <a href="#contact" className="block px-3 py-2 font-medium text-gray-300 hover:text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</a>
               {isAuthed ? (
                 <div className="px-3 py-2">
                   <Button onClick={() => nav(dash)} className="w-full">Dashboard</Button>
@@ -182,90 +242,105 @@ export function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#071B3A] to-[#0a2347] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <section className="relative bg-gradient-to-br from-[#071B3A] to-[#0a2347] text-white overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-[#60a5fa]/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#3b82f6]/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#60a5fa]/5 to-[#3b82f6]/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
-                Secure Online
-                <span className="block text-[#60a5fa]">Examinations</span>
-              </h1>
-              <p className="mt-6 text-lg lg:text-xl text-gray-300 leading-relaxed">
-                A comprehensive exam monitoring platform that ensures academic integrity
-                with advanced proctoring, real-time monitoring, and detailed analytics for
-                modern educational institutions.
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="relative z-10">
+              <div className="space-y-6">
+                <h1 className="text-4xl lg:text-6xl font-light tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-[#60a5fa]" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                  Secure Online
+                  <span className="block font-medium">Examinations</span>
+                </h1>
+                <p className="text-lg lg:text-xl text-gray-300 leading-relaxed max-w-lg" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                  A comprehensive examination platform that ensures academic integrity
+                  with robust monitoring, real-time supervision, and detailed analytics for
+                  modern educational institutions.
+                </p>
+              </div>
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 {isAuthed ? (
                   <Button
                     onClick={() => nav(dash)}
-                    className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg"
+                    className="bg-navyblue/30 border-slate-700 text-white px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 shadow-lg shadow-slate-700/50"
+                    style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
                   >
                     Go to Dashboard
                   </Button>
                 ) : (
                   <>
                     <Link to="/register">
-                      <Button className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg">
+                      <Button className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                         Get Started
                       </Button>
                     </Link>
                     <Link to="/login">
-                      <Button variant="secondary" className="border-white text-white hover:bg-white hover:text-[#071B3A] px-8 py-3 text-lg">
+                      <Button variant="secondary" className="border border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 hover:scale-105" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                         Login
                       </Button>
                     </Link>
                   </>
                 )}
               </div>
-              <div className="mt-8 flex items-center space-x-8 text-sm text-gray-400">
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-[#60a5fa] mr-2" />
-                  <span>AI Proctoring</span>
+
+              <div className="mt-12 grid grid-cols-3 gap-6">
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+                  <div className="text-2xl font-bold text-[#60a5fa] mb-1">10K+</div>
+                  <div className="text-sm text-gray-400">Exams</div>
                 </div>
-                <div className="flex items-center">
-                  <Shield className="h-5 w-5 text-[#60a5fa] mr-2" />
-                  <span>Secure Platform</span>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+                  <div className="text-2xl font-bold text-[#60a5fa] mb-1">50K+</div>
+                  <div className="text-sm text-gray-400">Students</div>
                 </div>
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 text-[#60a5fa] mr-2" />
-                  <span>Real-time Monitoring</span>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+                  <div className="text-2xl font-bold text-[#60a5fa] mb-1">99.9%</div>
+                  <div className="text-sm text-gray-400">Uptime</div>
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <img
-                src="/college entrance exam-amico.svg"
-                alt="Secure online examinations"
-                className="w-full h-auto"
-                draggable={false}
-              />
+
+            <div className="relative z-10">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#60a5fa]/20 to-[#3b82f6]/20 rounded-2xl blur-xl"></div>
+                <img
+                  src="/college entrance exam-amico.svg"
+                  alt="Secure online examinations"
+                  className="relative w-full h-auto"
+                  draggable={false}
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-50">
+      <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#071B3A] [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
-              Powerful Features for Modern Education
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-slate-900" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+              Essential Features for Modern Education
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               Everything you need to conduct secure, fair, and efficient online examinations
-              with advanced monitoring and comprehensive analytics.
+              with comprehensive monitoring and detailed analytics.
             </p>
           </div>
 
           <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-[#071B3A] rounded-lg flex items-center justify-center mb-6">
+              <div key={index} className="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-sm">
+                <div className="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center mb-6">
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-[#071B3A] mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-medium text-slate-900 mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{feature.description}</p>
               </div>
             ))}
           </div>
@@ -273,57 +348,57 @@ export function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-[#071B3A] text-white">
+      <section id="stats-section" className="py-20 bg-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-[#60a5fa] mb-2">10K+</div>
-              <div className="text-gray-300">Exams Conducted</div>
+              <div className="text-4xl font-light text-slate-900 mb-2 counter" data-target="1500" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>0</div>
+              <div className="text-gray-600 font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Exams Conducted</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#60a5fa] mb-2">50K+</div>
-              <div className="text-gray-300">Students Tested</div>
+              <div className="text-4xl font-light text-slate-900 mb-2 counter" data-target="3500" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>0</div>
+              <div className="text-gray-600 font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Students Tested</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#60a5fa] mb-2">99.9%</div>
-              <div className="text-gray-300">Uptime</div>
+              <div className="text-4xl font-light text-slate-900 mb-2 counter" data-target="99.9" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>0%</div>
+              <div className="text-gray-600 font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Uptime</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#60a5fa] mb-2">24/7</div>
-              <div className="text-gray-300">Monitoring</div>
+              <div className="text-4xl font-light text-slate-900 mb-2 counter" data-target="24" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>0/7</div>
+              <div className="text-gray-600 font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Monitoring</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="py-20 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#071B3A] [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-slate-900" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               Frequently Asked Questions
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-lg text-gray-600" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               Everything you need to know about SMESH examination platform
             </p>
           </div>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg">
+              <div key={index} className="bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-300">
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors"
+                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
                 >
-                  <span className="font-medium text-[#071B3A]">{faq.question}</span>
+                  <span className="font-medium text-slate-900" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{faq.question}</span>
                   {expandedFaq === index ? (
-                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                    <ChevronUp className="h-5 w-5 text-slate-500" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                    <ChevronDown className="h-5 w-5 text-slate-500" />
                   )}
                 </button>
                 {expandedFaq === index && (
-                  <div className="px-6 pb-4 text-gray-600 leading-relaxed">
+                  <div className="px-6 pb-4 text-gray-600 leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     {faq.answer}
                   </div>
                 )}
@@ -334,24 +409,25 @@ export function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-[#071B3A] to-[#0a2347] text-white">
+      <section className="py-20 bg-slate-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
+          <h2 className="text-3xl lg:text-4xl font-light tracking-tight mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
             Ready to Transform Your Examination Process?
           </h2>
-          <p className="text-lg text-gray-300 mb-8">
+          <p className="text-lg text-gray-300 mb-8" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
             Join thousands of educational institutions already using SMESH for secure online examinations.
           </p>
           {isAuthed ? (
             <Button
               onClick={() => nav(dash)}
-              className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg"
+              className="bg-white hover:bg-gray-100 text-slate-700/100 px-8 py-3 text-lg font-medium"
+              style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
             >
               Go to Dashboard
             </Button>
           ) : (
             <Link to="/register">
-              <Button className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg">
+              <Button className="bg-white hover:bg-gray-100 text-slate-900 px-8 py-3 text-lg font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 Get Started Today
               </Button>
             </Link>
@@ -360,59 +436,59 @@ export function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-white py-12">
+      <footer id="contact" className="bg-slate-950 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold text-white [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
+              <div className="text-2xl font-light tracking-tight text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 SMESH
               </div>
-              <p className="mt-2 text-gray-400">
+              <p className="mt-2 text-gray-400" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 Secure examination monitoring platform for modern education.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-white mb-4">Product</h3>
+              <h3 className="font-medium text-white mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Product</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Features</a></li>
+                <li><a href="#faq" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>FAQ</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Security</a></li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-white mb-4">Company</h3>
+              <h3 className="font-medium text-white mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Company</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</a></li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-white mb-4">Contact</h3>
+              <h3 className="font-medium text-white mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</h3>
               <div className="space-y-2 text-gray-400">
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 mr-2" />
-                  <span>support@smesh.edu</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>support@smesh.edu</span>
                 </div>
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 mr-2" />
-                  <span>+1 (555) 123-4567</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>+1 (555) 123-4567</span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-2" />
-                  <span>San Francisco, CA</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>San Francisco, CA</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-            <p>&copy; 2024 SMESH. All rights reserved.</p>
+          <div className="mt-8 pt-8 border-t border-slate-800 text-center text-gray-400">
+            <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>&copy; 2024 SMESH. All rights reserved.</p>
           </div>
         </div>
       </footer>

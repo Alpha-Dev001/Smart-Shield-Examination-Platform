@@ -6,7 +6,7 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body,
   #root {
     height: 100%;
@@ -42,9 +42,15 @@
   }
 
   .smesh-h2 {
-    font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
     letter-spacing: -0.01em;
-    @apply text-2xl font-semibold;
+    @apply text-2xl font-bold;
+    color: var(--smesh-ink);
+  }
+
+  .smesh-title {
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    font-weight: 600;
     color: var(--smesh-ink);
   }
 
@@ -70,6 +76,7 @@
     isolation: isolate;
     overflow: hidden;
   }
+
   .smesh-orbs::before,
   .smesh-orbs::after {
     content: '';
@@ -80,11 +87,13 @@
     z-index: -1;
     pointer-events: none;
   }
+
   .smesh-orbs::before {
     width: 180px;
     height: 180px;
     background: rgba(120, 129, 219, 0.32);
   }
+
   .smesh-orbs::after {
     right: -70px;
     bottom: -110px;

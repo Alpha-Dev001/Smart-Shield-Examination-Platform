@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
-  ) {}
+  ) { }
 
   // ── Register ────────────────────────────────────────────────────────
   async register(dto: RegisterDto) {

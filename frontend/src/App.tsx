@@ -7,6 +7,8 @@ import { LandingPage } from './pages/LandingPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { TeacherHome } from './pages/TeacherHome'
+import { TeacherClassesPage } from './pages/TeacherClassesPage'
+import { TeacherSettingsPage } from './pages/TeacherSettingsPage'
 import { StudentHome } from './pages/StudentHome'
 import { StudentSessionsPage } from './pages/StudentSessionsPage'
 import { StudentTakeSessionPage } from './pages/StudentTakeSessionPage'
@@ -37,6 +39,8 @@ function App() {
         <Route element={<AppShell />}>
           <Route element={<RequireAuth role="TEACHER" />}>
             <Route path="/teacher" element={<TeacherHome />} />
+            <Route path="/teacher/classes" element={<TeacherClassesPage />} />
+            <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
             <Route path="/teacher/classes/:classId" element={<TeacherClassPage />} />
             <Route path="/teacher/exams/:examId" element={<TeacherExamPage />} />
             <Route path="/teacher/sessions/:sessionId" element={<TeacherSessionPage />} />
