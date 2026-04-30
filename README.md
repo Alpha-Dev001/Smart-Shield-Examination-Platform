@@ -54,7 +54,7 @@ SmEsh Smart Shield is a **production-ready examination platform** that transform
 ```mermaid
 graph TB
     A[React Frontend] --> B[NestJS API]
-    B --> C[MySQL Database]
+    B --> C[Postgres Database]
     B --> D[Socket.IO Real-time]
     E[Proctoring Engine] --> D
     F[Security Layer] --> B
