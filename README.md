@@ -13,47 +13,47 @@
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.0+-black?style=flat-square&logo=socket.io)](https://socket.io/)
 
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat-square)](https://github.com/your-repo)
-[![Version](https://img.shields.io/badge/Version-2.0.0-blue?style=flat-square)](https://github.com/your-repo/releases)
+[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat-square)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform)
+[![Version](https://img.shields.io/badge/Version-2.0.0-blue?style=flat-square)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform/releases)
 
 </div>
 
 ---
 
-## 🎯 **Revolutionizing Online Assessments**
+## **Revolutionizing Online Assessments**
 
 SmEsh Smart Shield is a **production-ready examination platform** that transforms how educational institutions conduct secure remote assessments. With cutting-edge AI-powered proctoring, real-time monitoring, and enterprise-grade security, SmEsh ensures academic integrity while providing an exceptional user experience.
 
 ---
 
-## 🚀 **Core Capabilities**
+## **Core Capabilities**
 
-### 🛡️ **Advanced Proctoring System**
-- **🔴 Live Monitoring** - Real-time student tracking with WebSocket-based updates
-- **🔒 Browser Lockdown** - Fullscreen enforcement with comprehensive security controls
-- **🚨 Intelligent Detection** - Automatic violation flagging (tab switching, copy/paste, DevTools)
-- **⚡ Emergency Controls** - Instant session termination capabilities
+### **Advanced Proctoring System**
+- ** Live Monitoring** - Real-time student tracking with WebSocket-based updates
+- ** Browser Lockdown** - Fullscreen enforcement with comprehensive security controls
+- ** Intelligent Detection** - Automatic violation flagging (tab switching, copy/paste, DevTools)
+- ** Emergency Controls** - Instant session termination capabilities
 
-### 📊 **Multi-Role Ecosystem**
-- **👨‍💼 Admin Dashboard** - User management, system analytics, audit trails
-- **👩‍🏫 Teacher Dashboard** - Test creation, live proctoring, detailed analytics
-- **👨‍🎓 Student Dashboard** - Available tests, exam sessions, performance insights
+### **Multi-Role Ecosystem**
+- ** Admin Dashboard** - User management, system analytics, audit trails
+- ** Teacher Dashboard** - Test creation, live proctoring, detailed analytics
+- ** Student Dashboard** - Available tests, exam sessions, performance insights
 
-### 🔐 **Enterprise Security**
-- **🔐 JWT Authentication** - Dual-token system with role-based access control
-- **🛡️ Input Validation** - Comprehensive Zod schema validation
-- **🚦 Rate Limiting** - Advanced API protection mechanisms
-- **📝 Audit Logging** - Complete activity tracking for compliance
+###  **Enterprise Security**
+- ** JWT Authentication** - Dual-token system with role-based access control
+- ** Input Validation** - Comprehensive Zod schema validation
+- ** Rate Limiting** - Advanced API protection mechanisms
+- ** Audit Logging** - Complete activity tracking for compliance
 
 ---
 
-## 🏗️ **Technical Architecture**
+##  **Technical Architecture**
 
 <div align="center">
 
 ```mermaid
 graph TB
-    A[React Frontend] --> B[Express.js API]
+    A[React Frontend] --> B[NestJS API]
     B --> C[MySQL Database]
     B --> D[Socket.IO Real-time]
     E[Proctoring Engine] --> D
@@ -68,7 +68,7 @@ graph TB
 |------------|---------|---------|
 | **Node.js** | Runtime Environment | 18+ |
 | **TypeScript** | Type Safety | 5.0+ |
-| **Express.js** | Web Framework | 4.18+ |
+| **NestJS** | Web Framework | 10.0+ |
 | **Prisma ORM** | Database Management | 5.0+ |
 | **Socket.IO** | Real-time Communication | 4.7+ |
 | **JWT** | Authentication | jsonwebtoken |
@@ -85,7 +85,7 @@ graph TB
 
 ---
 
-## 🚀 **Quick Start**
+## **Quick Start**
 
 ### **Prerequisites**
 - ✅ Node.js 18+ and npm
@@ -95,21 +95,21 @@ graph TB
 ### **Installation & Setup**
 
 ```bash
-# 🚀 Clone the repository
-git clone https://github.com/your-username/smesh-exam-platform.git
-cd smesh-exam-platform
+# Clone the repository
+git clone https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform.git
+cd Smart-Shield-Examination-Platform
 
-# 📦 Install dependencies
+# Install dependencies
 npm run install:all
 
-# 🗄️ Setup database
-cd apps/api
+# Setup database
+cd backend
 npm run prisma:push
 npm run prisma:seed
 
-# 🚀 Start development servers
-npm run dev          # Backend API on port 4000
-cd ../web && npm run dev  # Frontend on port 5173
+# Start development servers
+npm run start:dev     # Backend API on port 4000
+cd ../frontend && npm run dev  # Frontend on port 5173
 ```
 
 ### **Demo Credentials**
@@ -121,21 +121,21 @@ cd ../web && npm run dev  # Frontend on port 5173
 
 ---
 
-## 🎯 **Key Features**
+## **Key Features**
 
-### **📝 Examination Management**
+### ** Examination Management**
 - **Multiple Question Types** - Multiple choice, essays, programming problems
 - **Automated Grading** - Instant scoring with detailed feedback
 - **Time Controls** - Flexible exam duration and scheduling
 - **Question Banks** - Reusable question libraries
 
-### **👥 User Management**
+### ** User Management**
 - **Role-Based Access** - Granular permissions for Admin/Teacher/Student
 - **Class Organization** - Hierarchical class and student management
 - **Profile Management** - Comprehensive user profiles and settings
 - **Bulk Operations** - Efficient user import and management tools
 
-### **📈 Analytics & Reporting**
+### ** Analytics & Reporting**
 - **Performance Analytics** - Detailed exam statistics and insights
 - **Violation Reports** - Comprehensive proctoring violation tracking
 - **Progress Tracking** - Student performance over time
@@ -143,7 +143,7 @@ cd ../web && npm run dev  # Frontend on port 5173
 
 ---
 
-## 🛡️ **Security Features**
+## **Security Features**
 
 ### **Advanced Proctoring**
 | Feature | Description | Implementation |
@@ -155,14 +155,14 @@ cd ../web && npm run dev  # Frontend on port 5173
 | **DevTools Detection** | Identifies developer tools usage | Window dimension monitoring |
 
 ### **Data Protection**
-- **🔒 End-to-End Encryption** - Secure data transmission
-- **🛡️ GDPR Compliance** - Privacy-first design principles
-- **📝 Audit Trails** - Complete activity logging
-- **🚨 Intrusion Detection** - Advanced threat monitoring
+- ** End-to-End Encryption** - Secure data transmission
+- ** GDPR Compliance** - Privacy-first design principles
+- ** Audit Trails** - Complete activity logging
+- ** Intrusion Detection** - Advanced threat monitoring
 
 ---
 
-## 📊 **Performance Metrics**
+## **Performance Metrics**
 
 <div align="center">
 
@@ -177,23 +177,23 @@ cd ../web && npm run dev  # Frontend on port 5173
 
 ---
 
-## 🎯 **Use Cases**
+## **Use Cases**
 
 ### **Educational Institutions**
-- **🎓 Universities** - Large-scale remote examinations
-- **🏫 K-12 Schools** - Secure classroom assessments
-- **🏢 Corporate Training** - Employee certification programs
-- **📚 Online Learning** - MOOC and e-learning platforms
+- ** Universities** - Large-scale remote examinations
+- ** K-12 Schools** - Secure classroom assessments
+- ** Corporate Training** - Employee certification programs
+- ** Online Learning** - MOOC and e-learning platforms
 
 ### **Exam Types**
-- **📝 Academic Tests** - Regular coursework assessments
-- **🎯 Final Examinations** - High-stakes university exams
-- **🏆 Certification Tests** - Professional licensing exams
-- **✅ Compliance Training** - Mandatory workplace assessments
+- ** Academic Tests** - Regular coursework assessments
+- ** Final Examinations** - High-stakes university exams
+- ** Certification Tests** - Professional licensing exams
+- ** Compliance Training** - Mandatory workplace assessments
 
 ---
 
-## 🤝 **Contributing**
+## **Contributing**
 
 We welcome contributions from the community! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -206,41 +206,18 @@ We welcome contributions from the community! Please see our [Contributing Guide]
 
 ---
 
-## 📄 **License & Support**
+## **License & Support**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### **🆘 Support & Community**
-- **📧 Email Support**: support@smesh.edu
-- **💬 Discord Community**: [Join our Discord](https://discord.gg/smesh)
-- **📖 Documentation**: [docs.smesh.edu](https://docs.smesh.edu)
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/your-repo/issues)
-
----
-
-## 🚀 **Roadmap**
-
-### **Version 2.1 (Q2 2024)**
-- [ ] AI-powered behavior analysis
-- [ ] Mobile application support
-- [ ] Advanced analytics dashboard
-- [ ] LMS integration APIs
-
-### **Version 3.0 (Q4 2024)**
-- [ ] Blockchain-based certification
-- [ ] Voice proctoring capabilities
-- [ ] Advanced plagiarism detection
-- [ ] Multi-language support
-
----
 
 <div align="center">
 
 **⭐ Star this repository if it helped you!**
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/smesh-exam-platform?style=social)](https://github.com/your-username/smesh-exam-platform)
-[![GitHub forks](https://img.shields.io/github/forks/your-username/smesh-exam-platform?style=social)](https://github.com/your-username/smesh-exam-platform)
+[![GitHub stars](https://img.shields.io/github/stars/Alpha-Dev001/Smart-Shield-Examination-Platform?style=social)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform)
+[![GitHub forks](https://img.shields.io/github/forks/Alpha-Dev001/Smart-Shield-Examination-Platform?style=social)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform)
 
-**Built with ❤️ for the future of education**
+**Built with passion for the future of education**
 
 </div>
