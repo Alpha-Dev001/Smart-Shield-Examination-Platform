@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TEACHER
+  STUDENT
+}
+
+enum SessionStatus {
+  PENDING
+  LIVE
+  ENDED
+}
+
+enum QuestionType {
+  MCQ
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+enum ProctoringEventType {
+  TAB_SWITCH
+  FULLSCREEN_EXIT
+  HEARTBEAT_MISSED
+  CLIPBOARD_ATTEMPT
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(STUDENT)
+  classId   String?
+  createdAt DateTime @default(now())
+
+  class               Class?               @relation(fields: [classId], references: [id])
+  taughtClasses       Class[]              @relation("TeacherClasses")
+  sessionParticipants SessionParticipant[]
+  answers             Answer[]
+  proctoringEvents    ProctoringEvent[]
+}
+
+model Class {
+  id        String   @id @default(uuid())
+  name      String
+  joinCode  String   @unique
+  teacherId String
+  createdAt DateTime @default(now())
+
+  teacher  User   @relation("TeacherClasses", fields: [teacherId], references: [id])
+  students User[]
+  exams    Exam[]
+}
+
+model Exam {
+  id         String   @id @default(uuid())
+  title      String
+  classId    String
+  startAt    DateTime
+  duration   Int
+  randomize  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  class     Class      @relation(fields: [classId], references: [id])
+  questions Question[]
+  sessions  Session[]
+}
+
+model Question {
+  id      String       @id @default(uuid())
+  examId  String
+  type    QuestionType
+  text    String
+  options Json?
+  answer  Json
+
+  exam    Exam     @relation(fields: [examId], references: [id])
+  answers Answer[]
+}
+
+model Session {
+  id        String        @id @default(uuid())
+  examId    String
+  status    SessionStatus @default(PENDING)
+  startedAt DateTime?
+  endedAt   DateTime?
+
+  exam         Exam                 @relation(fields: [examId], references: [id])
+  participants SessionParticipant[]
+}
+
+model SessionParticipant {
+  id          String    @id @default(uuid())
+  sessionId   String
+  studentId   String
+  joinedAt    DateTime  @default(now())
+  submittedAt DateTime?
+  score       Float?
+  flagCount   Int       @default(0)
+
+  session Session @relation(fields: [sessionId], references: [id])
+  student User    @relation(fields: [studentId], references: [id])
+}
+
+model Answer {
+  id          String   @id @default(uuid())
+  sessionId   String
+  studentId   String
+  questionId  String
+  value       Json
+  answeredAt  DateTime @default(now())
+
+  student  User     @relation(fields: [studentId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
+}
+
+model ProctoringEvent {
+  id         String              @id @default(uuid())
+  sessionId  String
+  studentId  String
+  type       ProctoringEventType
+  occurredAt DateTime            @default(now())
+
+  student User @relation(fields: [studentId], references: [id])
+}

@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body,
+  #root {
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply antialiased;
+    background: #f6f7fb;
+    color: #0b1220;
+    overflow-x: hidden;
+  }
+
+  :root {
+    --smesh-navy: #071b3a;
+    --smesh-navy-2: #0b2a5e;
+    --smesh-ink: #0b1220;
+    --smesh-muted: #5b6474;
+    --smesh-border: rgba(11, 18, 32, 0.14);
+    --smesh-card: #ffffff;
+    --smesh-soft: #eef2ff;
+    --smesh-shadow: 0 10px 28px rgba(7, 27, 58, 0.08);
+    --smesh-shadow-soft: 0 6px 18px rgba(7, 27, 58, 0.06);
+  }
+}
+
+@layer components {
+  .smesh-h1 {
+    font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    letter-spacing: -0.02em;
+    @apply text-4xl font-semibold;
+    color: var(--smesh-navy);
+  }
+
+  .smesh-h2 {
+    font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    letter-spacing: -0.01em;
+    @apply text-2xl font-semibold;
+    color: var(--smesh-ink);
+  }
+
+  .smesh-muted {
+    color: var(--smesh-muted);
+  }
+
+  .smesh-card {
+    background: var(--smesh-card);
+    border: 1px solid var(--smesh-border);
+    border-radius: 18px;
+    box-shadow: var(--smesh-shadow-soft);
+  }
+
+  .smesh-card-soft {
+    background: rgba(7, 27, 58, 0.035);
+    border: 1px solid rgba(11, 18, 32, 0.1);
+    border-radius: 16px;
+  }
+
+  .smesh-orbs {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .smesh-orbs::before,
+  .smesh-orbs::after {
+    content: '';
+    position: absolute;
+    right: -110px;
+    bottom: -150px;
+    border-radius: 9999px;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .smesh-orbs::before {
+    width: 180px;
+    height: 180px;
+    background: rgba(120, 129, 219, 0.32);
+  }
+  .smesh-orbs::after {
+    right: -70px;
+    bottom: -110px;
+    width: 180px;
+    height: 180px;
+    background: rgba(7, 27, 58, 0.95);
+  }
+}
