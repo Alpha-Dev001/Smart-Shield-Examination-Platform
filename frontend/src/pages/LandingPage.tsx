@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../store/auth'
 import { Button } from '../components/ui/Button'
 import {
@@ -21,6 +21,10 @@ import { useState, useEffect } from 'react'
 export function LandingPage() {
   const auth = useAuth()
   const nav = useNavigate()
+  const location = useLocation()
+
+  // Debug current location
+  console.log('Current location:', location.pathname)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   const [scrolled, setScrolled] = useState(false)
@@ -100,7 +104,18 @@ export function LandingPage() {
   }
 
   const isAuthed = Boolean(auth.accessToken && auth.user)
-  const dash = auth.user?.role === 'TEACHER' ? '/teacher' : '/student'
+  const dash = auth.user?.role === 'TEACHER' ? '/teacher' :
+    auth.user?.role === 'ADMIN' ? '/admin' : '/student'
+
+  // Debug logging
+  console.log('LandingPage - Auth state:', {
+    isAuthed,
+    accessToken: !!auth.accessToken,
+    user: auth.user,
+    userRole: auth.user?.role,
+    dash,
+    isHydrated: auth.isHydrated
+  })
 
   const features = [
     {
@@ -172,6 +187,9 @@ export function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
+              <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center mr-3">
+                <img src="/logo.png" alt="SMESH Logo" className="w-5 h-5" />
+              </div>
               <div className={`text-2xl font-light tracking-tight ${scrolled ? 'text-white' : 'text-white'
                 }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 SMESH
@@ -190,16 +208,16 @@ export function LandingPage() {
               <a href="#contact" className={`font-medium transition-colors ${scrolled ? 'text-gray-300 hover:text-white' : 'text-gray-300 hover:text-white'
                 }`} style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</a>
               {isAuthed ? (
-                <Button onClick={() => nav(dash)}>Dashboard</Button>
+                <Button onClick={() => {
+                  console.log('Dashboard button clicked, navigating to:', dash)
+                  nav(dash)
+                }} className='bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-6 py-2 text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20 backdrop-blur-sm'>Dashboard</Button>
               ) : (
-                <div className="flex space-x-4">
-                  <Link to="/login">
-                    <Button variant="secondary">Login</Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button>Sign Up</Button>
-                  </Link>
-                </div>
+                <Link to="/login">
+                  <Button className="bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-6 py-2 text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20 backdrop-blur-sm" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Login
+                  </Button>
+                </Link>
               )}
             </div>
 
@@ -224,15 +242,17 @@ export function LandingPage() {
               <a href="#contact" className="block px-3 py-2 font-medium text-gray-300 hover:text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Contact</a>
               {isAuthed ? (
                 <div className="px-3 py-2">
-                  <Button onClick={() => nav(dash)} className="w-full">Dashboard</Button>
+                  <Button onClick={() => {
+                    console.log('Mobile dashboard button clicked, navigating to:', dash)
+                    nav(dash)
+                  }} className="w-full bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-6 py-2 text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20 backdrop-blur-sm">Dashboard</Button>
                 </div>
               ) : (
-                <div className="px-3 py-2 space-y-2">
+                <div className="px-3 py-2">
                   <Link to="/login">
-                    <Button variant="secondary" className="w-full">Login</Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button className="w-full">Sign Up</Button>
+                    <Button className="w-full bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20 backdrop-blur-sm" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                      Login
+                    </Button>
                   </Link>
                 </div>
               )}
@@ -242,7 +262,7 @@ export function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#071B3A] to-[#0a2347] text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#051629] to-[#071B3A] text-white overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-96 h-96 bg-[#60a5fa]/10 rounded-full blur-3xl"></div>
@@ -267,25 +287,21 @@ export function LandingPage() {
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 {isAuthed ? (
                   <Button
-                    onClick={() => nav(dash)}
-                    className="bg-navyblue/30 border-slate-700 text-white px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 shadow-lg shadow-slate-700/50"
+                    onClick={() => {
+                      console.log('Hero dashboard button clicked, navigating to:', dash)
+                      nav(dash)
+                    }}
+                    className="bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-12 py-4 text-200 font-semibold rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 border border-white/20 backdrop-blur-sm"
                     style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
                   >
                     Go to Dashboard
                   </Button>
                 ) : (
-                  <>
-                    <Link to="/register">
-                      <Button className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                        Get Started
-                      </Button>
-                    </Link>
-                    <Link to="/login">
-                      <Button variant="secondary" className="border border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 px-8 py-3 text-lg font-medium rounded-lg transition-all duration-200 hover:scale-105" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                        Login
-                      </Button>
-                    </Link>
-                  </>
+                  <Link to="/login">
+                    <Button className="bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-12 py-4 text-200 font-semibold rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 border border-white/20 backdrop-blur-sm" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                      Login to Your Account
+                    </Button>
+                  </Link>
                 )}
               </div>
 
@@ -309,7 +325,7 @@ export function LandingPage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#60a5fa]/20 to-[#3b82f6]/20 rounded-2xl blur-xl"></div>
                 <img
-                  src="/college entrance exam-amico.svg"
+                  src="/Online test-amico.svg"
                   alt="Secure online examinations"
                   className="relative w-full h-auto"
                   draggable={false}
@@ -336,7 +352,7 @@ export function LandingPage() {
           <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-sm">
-                <div className="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center mb-6">
+                <div className="w-12 h-12 bg-[#071B3A] rounded-full flex items-center justify-center mb-6">
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-medium text-slate-900 mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{feature.title}</h3>
@@ -419,16 +435,19 @@ export function LandingPage() {
           </p>
           {isAuthed ? (
             <Button
-              onClick={() => nav(dash)}
-              className="bg-white hover:bg-gray-100 text-slate-700/100 px-8 py-3 text-lg font-medium"
+              onClick={() => {
+                console.log('CTA dashboard button clicked, navigating to:', dash)
+                nav(dash)
+              }}
+              className="  px-8 py-3 text-lg font-medium bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-12 py-4 text-lg font-semibold rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 border border-white/20 backdrop-blur-sm"
               style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
             >
               Go to Dashboard
             </Button>
           ) : (
-            <Link to="/register">
-              <Button className="bg-white hover:bg-gray-100 text-slate-900 px-8 py-3 text-lg font-medium" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                Get Started Today
+            <Link to="/login">
+              <Button className=" px-8 py-3 text-lg font-medium bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-12 py-4 text-lg font-semibold rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 border border-white/20 backdrop-blur-sm" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Login to Get Started
               </Button>
             </Link>
           )}
@@ -473,22 +492,22 @@ export function LandingPage() {
               <div className="space-y-2 text-gray-400">
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 mr-2" />
-                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>support@smesh.edu</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>alphamunezero5@gmail.com</span>
                 </div>
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 mr-2" />
-                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>+1 (555) 123-4567</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>+250 788 607 974</span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-2" />
-                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>San Francisco, CA</span>
+                  <span style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Kigali, Rwanda</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="mt-8 pt-8 border-t border-slate-800 text-center text-gray-400">
-            <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>&copy; 2024 SMESH. All rights reserved.</p>
+            <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>&copy; 2026 SMESH. All rights reserved.</p>
           </div>
         </div>
       </footer>

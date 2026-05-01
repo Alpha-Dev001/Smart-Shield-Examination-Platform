@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { io, type Socket } from 'socket.io-client'
 import { toast } from 'sonner'
 import { api, getApiErrorMessage } from '../lib/api'
@@ -23,6 +23,7 @@ type JoinResponse = {
 
 export function StudentTakeSessionPage() {
   const { sessionId } = useParams()
+  const nav = useNavigate()
   const [data, setData] = useState<JoinResponse | null>(null)
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const [saving, setSaving] = useState<string | null>(null)
@@ -50,12 +51,20 @@ export function StudentTakeSessionPage() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       try {
         await join()
         await loadMyAnswers()
       } catch (e) {
-        toast.error(getApiErrorMessage(e))
+        const errorMessage = getApiErrorMessage(e)
+        toast.error(errorMessage)
+
+        // If session is invalid, redirect back to sessions page
+        if (errorMessage.includes('Invalid session code') || errorMessage.includes('Session not found')) {
+          setTimeout(() => {
+            nav('/student/sessions')
+          }, 2000)
+        }
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

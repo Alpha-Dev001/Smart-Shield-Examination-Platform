@@ -4,6 +4,18 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+  // Create an admin user
+  const adminPassword = await bcrypt.hash('mu1ne2ze3ro4', 10);
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@smesh.com',
+      password: adminPassword,
+      role: 'ADMIN',
+      firstName: 'System',
+      lastName: 'Administrator',
+    },
+  });
+
   // Create a teacher
   const teacherPassword = await bcrypt.hash('teacher123', 10);
   const teacher = await prisma.user.create({
@@ -71,6 +83,7 @@ async function main() {
   });
 
   console.log('Database seeded successfully!');
+  console.log('Admin login: admin@smesh.com / mu1ne2ze3ro4');
   console.log('Teacher login: teacher@school.com / teacher123');
   console.log('Student login: student@school.com / student123');
 }

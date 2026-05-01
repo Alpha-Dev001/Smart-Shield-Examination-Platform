@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { StatCard } from '../components/ui/StatCard'
 import { BookOpen, TrendingUp, Calendar, Award, Users } from 'lucide-react'
+import { useAuth } from '../store/auth'
 
 type MyClass = {
   id: string
@@ -17,6 +18,7 @@ type MyClass = {
 
 export function StudentHome() {
   const nav = useNavigate()
+  const auth = useAuth()
   const [myClass, setMyClass] = useState<MyClass | null>(null)
   const [loading, setLoading] = useState(true)
   const [joinCode, setJoinCode] = useState('')
@@ -26,31 +28,35 @@ export function StudentHome() {
   async function load() {
     setLoading(true)
     try {
+      // Debug: Log auth state
+      console.log('Auth state:', {
+        token: !!auth.accessToken,
+        user: auth.user,
+        isHydrated: auth.isHydrated
+      })
+
       const res = await api.get<MyClass>('/classes/my-class')
       setMyClass(res.data)
     } catch (error) {
       console.error('Failed to load class data:', error)
-      // Use mock data for development when API is not available
-      const mockData: MyClass = {
-        id: 'mock-class-1',
-        name: 'Advanced Mathematics',
-        teacher: { id: 'teacher-1', email: 'teacher@school.edu' },
-        exams: [
-          { id: 'exam-1', title: 'Calculus Quiz', startAt: new Date(Date.now() + 86400000).toISOString(), duration: 60 },
-          { id: 'exam-2', title: 'Algebra Test', startAt: new Date(Date.now() + 172800000).toISOString(), duration: 90 }
-        ],
-        _count: { students: 25 }
+      // Debug: Log detailed error info
+      if (error && typeof error === 'object' && 'response' in error) {
+        console.error('Error response:', error.response)
+        console.error('Error status:', error.response?.status)
+        console.error('Error data:', error.response?.data)
       }
-      setMyClass(mockData)
-      toast.info('Using demo data - Backend API not available')
+      toast.error('Failed to load class data. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    void load()
-  }, [])
+    // Only load data if auth is hydrated and user is authenticated
+    if (auth.isHydrated && auth.accessToken && auth.user) {
+      void load()
+    }
+  }, [auth.isHydrated, auth.accessToken, auth.user])
 
   async function join() {
     if (!joinCode.trim()) return

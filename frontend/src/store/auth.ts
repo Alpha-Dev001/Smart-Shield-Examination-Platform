@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { api } from '../lib/api'
 
-export type Role = 'TEACHER' | 'STUDENT'
+export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT'
 
 export type Me = {
   id: string

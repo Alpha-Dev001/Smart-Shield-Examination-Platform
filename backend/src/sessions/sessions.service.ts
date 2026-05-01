@@ -125,7 +125,7 @@ export class SessionsService {
             where: { id: sessionId },
         });
 
-        if (!session) throw new NotFoundException('Session not found');
+        if (!session) throw new NotFoundException('Invalid session code');
 
         if (session.status !== SessionStatus.PENDING) {
             throw new BadRequestException(
@@ -148,7 +148,7 @@ export class SessionsService {
             where: { id: sessionId },
         });
 
-        if (!session) throw new NotFoundException('Session not found');
+        if (!session) throw new NotFoundException('Invalid session code');
 
         if (session.status === SessionStatus.ENDED) {
             throw new BadRequestException('Session is already ended');
@@ -189,7 +189,7 @@ export class SessionsService {
             },
         });
 
-        if (!session) throw new NotFoundException('Session not found');
+        if (!session) throw new NotFoundException('Invalid session code');
 
         // session must be live
         if (session.status !== SessionStatus.LIVE) {
@@ -457,7 +457,7 @@ export class SessionsService {
             },
         });
 
-        if (!session) throw new NotFoundException('Session not found');
+        if (!session) throw new NotFoundException('Invalid session code');
         return session;
     }
 

@@ -5,9 +5,9 @@ import { AppShell } from './components/layout/AppShell'
 import { RequireAuth } from './components/auth/RequireAuth'
 import { LandingPage } from './pages/LandingPage'
 import { LoginPage } from './pages/LoginPage'
-import { RegisterPage } from './pages/RegisterPage'
 import { TeacherHome } from './pages/TeacherHome'
 import { TeacherClassesPage } from './pages/TeacherClassesPage'
+import { TeacherCreateClassPage } from './pages/TeacherCreateClassPage'
 import { TeacherSettingsPage } from './pages/TeacherSettingsPage'
 import { StudentHome } from './pages/StudentHome'
 import { StudentSessionsPage } from './pages/StudentSessionsPage'
@@ -18,6 +18,9 @@ import { StudentClassPage } from './pages/StudentClassPage'
 import { TeacherClassPage } from './pages/TeacherClassPage'
 import { TeacherExamPage } from './pages/TeacherExamPage'
 import { TeacherSessionPage } from './pages/TeacherSessionPage'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { AdminCreateUserPage } from './pages/AdminCreateUserPage'
+import { RequireAdmin } from './components/admin/AdminAuth'
 
 function App() {
   const auth = useAuth()
@@ -32,7 +35,18 @@ function App() {
       {/* Public routes without AppShell */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+
+      {/* Secret Admin Route */}
+      <Route path="/admin" element={
+        <RequireAdmin>
+          <AdminDashboard />
+        </RequireAdmin>
+      } />
+      <Route path="/admin/create-user" element={
+        <RequireAdmin>
+          <AdminCreateUserPage />
+        </RequireAdmin>
+      } />
 
       {/* Authenticated routes with AppShell */}
       <Route element={<RequireAuth />}>
@@ -40,6 +54,7 @@ function App() {
           <Route element={<RequireAuth role="TEACHER" />}>
             <Route path="/teacher" element={<TeacherHome />} />
             <Route path="/teacher/classes" element={<TeacherClassesPage />} />
+            <Route path="/teacher/create-class" element={<TeacherCreateClassPage />} />
             <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
             <Route path="/teacher/classes/:classId" element={<TeacherClassPage />} />
             <Route path="/teacher/exams/:examId" element={<TeacherExamPage />} />
@@ -57,11 +72,6 @@ function App() {
         </Route>
       </Route>
 
-      {/* Fallback route for authenticated users */}
-      <Route element={<RequireAuth />}>
-        <Route path="/teacher" element={<Navigate to="/teacher" replace />} />
-        <Route path="/student" element={<Navigate to="/student" replace />} />
-      </Route>
 
       {/* Fallback for unauthenticated users */}
       <Route path="*" element={<Navigate to="/" replace />} />

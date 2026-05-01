@@ -12,8 +12,13 @@ export function AuthSplitLayout({
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
         <aside className="relative hidden overflow-hidden bg-[#071B3A] lg:block">
           <div className="p-10">
-            <div className="text-5xl font-semibold tracking-wide text-white [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
-              SMESH
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <img src="/logo.png" alt="SMESH Logo" className="w-8 h-8" />
+              </div>
+              <div className="text-5xl font-semibold tracking-wide text-white [font-family:ui-serif,Georgia,Cambria,'Times New Roman',Times,serif]">
+                SMESH
+              </div>
             </div>
             <div className="mt-2 text-sm text-white/80">Exam monitoring system</div>
           </div>

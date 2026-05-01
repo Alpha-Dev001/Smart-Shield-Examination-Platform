@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { api, getApiErrorMessage } from '../lib/api'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
+import { ArrowLeft } from 'lucide-react'
 
 type ClassDetail = {
   id: string
@@ -101,9 +102,16 @@ export function TeacherClassPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <Link className="text-sm smesh-muted hover:underline" to="/teacher">
-            ← Back
-          </Link>
+                <div>
+        <Button
+          variant="secondary"
+          onClick={() => nav('/teacher/classes')}
+          className="gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Classes
+        </Button>
+      </div>
           <h1 className="mt-2 smesh-h2">{data.name}</h1>
           <div className="mt-1 text-sm smesh-muted">
             Join code:{' '}

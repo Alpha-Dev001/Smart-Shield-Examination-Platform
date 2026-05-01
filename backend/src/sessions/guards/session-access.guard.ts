@@ -9,7 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class SessionAccessGuard implements CanActivate {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -31,7 +31,7 @@ export class SessionAccessGuard implements CanActivate {
       },
     });
 
-    if (!session) throw new NotFoundException('Session not found');
+    if (!session) throw new NotFoundException('Invalid session code');
 
     if (session.exam.classId !== user.classId) {
       throw new ForbiddenException(

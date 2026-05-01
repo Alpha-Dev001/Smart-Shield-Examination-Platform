@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { BookOpen, GraduationCap, LayoutDashboard, LogOut, School, Settings, Users } from 'lucide-react'
+import { BookOpen, GraduationCap, LayoutDashboard, LogOut, Plus, School, Settings, Shield } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { useAuth } from '../../store/auth'
 
@@ -8,26 +8,18 @@ export function AppShell() {
   const user = auth.user
   const loc = useLocation()
 
-  if (!user) return <Outlet />
+  // Check if admin is authenticated via sessionStorage
+  const isAdminAuthenticated = sessionStorage.getItem('admin_authenticated') === 'true'
 
-  const isTeacher = user.role === 'TEACHER'
+  // If no regular user and not admin authenticated, show outlet
+  if (!user && !isAdminAuthenticated) return <Outlet />
+
+  // If admin authenticated (and no regular user), treat as admin shell
+  const isAdmin = isAdminAuthenticated && !user
+  const isTeacher = user?.role === 'TEACHER'
   const active = (path: string) =>
     loc.pathname === path
 
-  const pageTitle = (() => {
-    const p = loc.pathname
-    if (p.startsWith('/teacher/sessions/')) return 'Session monitoring'
-    if (p.startsWith('/teacher/exams/')) return 'Exam'
-    if (p.startsWith('/teacher/classes/')) return 'Class'
-    if (p.startsWith('/teacher')) return 'Teacher dashboard'
-    if (p.startsWith('/student/results/')) return 'My results'
-    if (p.startsWith('/student/sessions/')) return 'Take session'
-    if (p.startsWith('/student/sessions')) return 'Sessions'
-    if (p.startsWith('/student/settings')) return 'Settings'
-    if (p.startsWith('/student/class')) return 'My class'
-    if (p.startsWith('/student')) return 'Student dashboard'
-    return 'Dashboard'
-  })()
 
   const navItem = (
     href: string,
@@ -64,8 +56,8 @@ export function AppShell() {
         <div className="border-b border-white/10">
           <div className="px-6 py-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
-                <div className="text-xl font-bold text-white">S</div>
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <img src="/logo.png" alt="SMESH Logo" className="w-8 h-8" />
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-wide">SMESH</div>
@@ -81,10 +73,15 @@ export function AppShell() {
             <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider">Main Menu</h3>
           </div>
           <nav className="px-3 space-y-1">
-            {isTeacher ? (
+            {isAdmin ? (
+              <>
+                {navItem('/admin', 'Admin Dashboard', Shield)}
+              </>
+            ) : isTeacher ? (
               <>
                 {navItem('/teacher', 'Dashboard', LayoutDashboard)}
                 {navItem('/teacher/classes', 'Classes', School)}
+                {navItem('/teacher/create-class', 'Create Class', Plus)}
                 {navItem('/teacher/settings', 'Settings', Settings)}
               </>
             ) : (
@@ -101,13 +98,24 @@ export function AppShell() {
         <div className="mt-auto border-t border-white/10 px-4 py-4">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <div className="truncate text-xs font-medium text-white">{user.email}</div>
-              <div className="text-[11px] text-white/70">{user.role}</div>
+              <div className="truncate text-xs font-medium text-white">
+                {isAdmin ? 'Admin User' : user.email}
+              </div>
+              <div className="text-[11px] text-white/70">
+                {isAdmin ? 'Administrator' : user.role}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="secondary"
-                onClick={() => auth.logout()}
+                onClick={() => {
+                  if (isAdmin) {
+                    sessionStorage.removeItem('admin_authenticated')
+                    window.location.href = '/'
+                  } else {
+                    auth.logout()
+                  }
+                }}
                 className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15"
               >
                 <LogOut className="h-4 w-4" />
@@ -124,10 +132,10 @@ export function AppShell() {
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
               <div className="text-xs font-semibold uppercase tracking-wider text-[#5b6474] [font-family:Inter,system-ui,-apple-system,sans-serif]">
-                {isTeacher ? 'Teacher' : 'Student'} Dashboard
+                {isAdmin ? 'Admin' : isTeacher ? 'Teacher' : 'Student'} Dashboard
               </div>
               <div className="mt-1 text-lg font-semibold text-[#0b1220] [font-family:Inter,system-ui,-apple-system,sans-serif]">
-                Welcome back, {user.email?.split('@')[0] || 'User'}
+                Welcome back, {isAdmin ? 'Administrator' : user.email?.split('@')[0] || 'User'}
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -162,28 +170,30 @@ export function AppShell() {
 
           <div className="mb-6 flex flex-wrap gap-2 md:hidden">
             <Link
-              to={isTeacher ? '/teacher' : '/student'}
+              to={isAdmin ? '/admin' : isTeacher ? '/teacher' : '/student'}
               className={[
                 'rounded-full border px-4 py-2 text-sm shadow-sm transition',
-                active(isTeacher ? '/teacher' : '/student')
+                active(isAdmin ? '/admin' : isTeacher ? '/teacher' : '/student')
                   ? 'border-[rgba(7,27,58,0.45)] bg-[#071B3A] text-white'
                   : 'border-[rgba(11,18,32,0.14)] bg-white hover:bg-[rgba(7,27,58,0.03)]',
               ].join(' ')}
             >
               Dashboard
             </Link>
-            <Link
-              to={isTeacher ? '/teacher#classes' : '/student/class'}
-              className={[
-                'rounded-full border px-4 py-2 text-sm shadow-sm transition',
-                active(isTeacher ? '/teacher#classes' : '/student/class')
-                  ? 'border-[rgba(7,27,58,0.45)] bg-[#071B3A] text-white'
-                  : 'border-[rgba(11,18,32,0.14)] bg-white hover:bg-[rgba(7,27,58,0.03)]',
-              ].join(' ')}
-            >
-              {isTeacher ? 'Classes' : 'My class'}
-            </Link>
-            {!isTeacher ? (
+            {!isAdmin && (
+              <Link
+                to={isTeacher ? '/teacher#classes' : '/student/class'}
+                className={[
+                  'rounded-full border px-4 py-2 text-sm shadow-sm transition',
+                  active(isTeacher ? '/teacher#classes' : '/student/class')
+                    ? 'border-[rgba(7,27,58,0.45)] bg-[#071B3A] text-white'
+                    : 'border-[rgba(11,18,32,0.14)] bg-white hover:bg-[rgba(7,27,58,0.03)]',
+                ].join(' ')}
+              >
+                {isTeacher ? 'Classes' : 'My class'}
+              </Link>
+            )}
+            {!isAdmin && !isTeacher ? (
               <Link
                 to="/student/sessions"
                 className={[

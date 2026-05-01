@@ -8,11 +8,13 @@ export const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
+  // Check for regular user token first
   const token = localStorage.getItem('access_token')
+
   if (token) {
-    config.headers = config.headers ?? {}
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.set('Authorization', `Bearer ${token}`)
   }
+
   return config
 })
 

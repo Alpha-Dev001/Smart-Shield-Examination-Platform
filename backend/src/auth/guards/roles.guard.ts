@@ -10,7 +10,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) { }
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
@@ -23,7 +23,10 @@ export class RolesGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
 
-    if (!requiredRoles.includes(user.role)) {
+    // Ensure role comparison works with both string and enum types
+    const userRole = user.role as Role;
+
+    if (!requiredRoles.includes(userRole)) {
       throw new ForbiddenException(
         `Access denied. Required role: ${requiredRoles.join(' or ')}`,
       );

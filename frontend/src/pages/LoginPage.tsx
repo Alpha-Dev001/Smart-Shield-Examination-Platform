@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Input } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
@@ -39,26 +39,37 @@ export function LoginPage() {
 
   return (
     <AuthSplitLayout title="Login">
-      <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
-        <Input
-          label="Email"
-          type="email"
-          autoComplete="email"
-          error={form.formState.errors.email?.message}
-          {...form.register('email')}
-        />
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <div>
-          <Input
-            label="Password"
+          <label className="smesh-form-label mb-2 block">Email</label>
+          <input
+            type="email"
+            autoComplete="email"
+            className="smesh-form-input w-full px-4 py-3 border border-[rgba(11,18,32,0.14)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#071B3A] focus:border-transparent transition-all duration-200"
+            placeholder="Enter your email"
+            {...form.register('email')}
+          />
+          {form.formState.errors.email?.message && (
+            <p className="mt-1 text-xs text-rose-600 smesh-form-text">{form.formState.errors.email?.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="smesh-form-label mb-2 block">Password</label>
+          <input
             type="password"
             autoComplete="current-password"
-            error={form.formState.errors.password?.message}
+            className="smesh-form-input w-full px-4 py-3 border border-[rgba(11,18,32,0.14)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#071B3A] focus:border-transparent transition-all duration-200"
+            placeholder="Enter your password"
             {...form.register('password')}
           />
-          <div className="mt-2 text-right text-xs">
+          {form.formState.errors.password?.message && (
+            <p className="mt-1 text-xs text-rose-600 smesh-form-text">{form.formState.errors.password?.message}</p>
+          )}
+          <div className="mt-3 text-right">
             <button
               type="button"
-              className="text-[#071B3A]/70 hover:text-[#071B3A] hover:underline"
+              className="smesh-form-link hover:underline"
               onClick={() => toast.message('Password reset is not implemented yet.')}
             >
               Forgot password?
@@ -66,21 +77,22 @@ export function LoginPage() {
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-r from-[#071B3A] to-[#0a2347] hover:from-[#051629] hover:to-[#071B3A] text-white px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20 backdrop-blur-sm"
+          disabled={form.formState.isSubmitting}
+        >
           {form.formState.isSubmitting ? 'Logging in…' : 'Login'}
         </Button>
 
-        <label className="flex items-center gap-2 text-xs text-[#5b6474]">
-          <input type="checkbox" className="h-4 w-4 accent-[#071B3A]" />
+        <label className="flex items-center gap-3 smesh-form-text cursor-pointer">
+          <input
+            type="checkbox"
+            className="h-4 w-4 accent-[#071B3A] rounded"
+          />
           Remember Me
         </label>
 
-        <p className="pt-2 text-center text-sm text-[#5b6474]">
-          No account?{' '}
-          <Link className="font-medium text-[#071B3A] hover:underline" to="/register">
-            Register
-          </Link>
-        </p>
       </form>
     </AuthSplitLayout>
   )
