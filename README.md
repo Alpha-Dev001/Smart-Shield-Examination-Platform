@@ -6,12 +6,6 @@
 
 **Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring**
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=flat-square&logo=node.js)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18+-cyan?style=flat-square&logo=react)](https://reactjs.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange?style=flat-square&logo=mysql)](https://www.mysql.com/)
-[![Socket.IO](https://img.shields.io/badge/Socket.IO-4.0+-black?style=flat-square&logo=socket.io)](https://socket.io/)
-
 </div>
 
 ---
