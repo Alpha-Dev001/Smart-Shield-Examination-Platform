@@ -12,7 +12,6 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange?style=flat-square&logo=mysql)](https://www.mysql.com/)
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.0+-black?style=flat-square&logo=socket.io)](https://socket.io/)
 
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 </div>
 
 ---
