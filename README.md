@@ -14,7 +14,6 @@
 
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat-square)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform)
-[![Version](https://img.shields.io/badge/Version-2.0.0-blue?style=flat-square)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform/releases)
 
 </div>
 
