@@ -13,8 +13,6 @@
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.0+-black?style=flat-square&logo=socket.io)](https://socket.io/)
 
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat-square)](https://github.com/Alpha-Dev001/Smart-Shield-Examination-Platform)
-
 </div>
 
 ---
