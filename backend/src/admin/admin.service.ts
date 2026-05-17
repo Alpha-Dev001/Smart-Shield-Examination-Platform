@@ -60,7 +60,6 @@ export class AdminService {
 
   async createUser(createUserDto: any) {
     try {
-      // Check if email is already taken
       const existingUser = await this.prisma.user.findUnique({
         where: { email: createUserDto.email }
       });
@@ -68,11 +67,7 @@ export class AdminService {
       if (existingUser) {
         throw new ConflictException('Email is already in use');
       }
-
-      // Hash password
       const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
-
-      // Prepare user data
       const userData: any = {
         email: createUserDto.email,
         password: hashedPassword,
@@ -80,13 +75,9 @@ export class AdminService {
         firstName: createUserDto.firstName,
         lastName: createUserDto.lastName,
       };
-
-      // Add classId only for students and if provided
       if (createUserDto.role === 'STUDENT' && createUserDto.classId) {
         userData.classId = createUserDto.classId;
       }
-
-      // Create user
       const user = await this.prisma.user.create({
         data: userData,
         include: {
@@ -98,8 +89,6 @@ export class AdminService {
           }
         }
       });
-
-      // Return user without password
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     } catch (error) {
@@ -110,7 +99,6 @@ export class AdminService {
 
   async deleteUser(id: string) {
     try {
-      // First check if user exists
       const userExists = await this.prisma.user.findUnique({
         where: { id }
       });
@@ -118,8 +106,6 @@ export class AdminService {
       if (!userExists) {
         throw new Error(`User with id ${id} not found`);
       }
-
-      // Delete related records first due to foreign key constraints
       await this.prisma.answer.deleteMany({
         where: { studentId: id }
       });
@@ -132,7 +118,6 @@ export class AdminService {
         where: { studentId: id }
       });
 
-      // If user is a teacher, check if they have classes and handle them
       if (userExists.role === 'TEACHER') {
         const teacherClasses = await this.prisma.class.findMany({
           where: { teacherId: id }
@@ -145,8 +130,6 @@ export class AdminService {
           );
         }
       }
-
-      // Finally delete the user
       return await this.prisma.user.delete({
         where: { id }
       });
@@ -182,7 +165,6 @@ export class AdminService {
 
   async deleteClass(id: string) {
     try {
-      // First check if class exists
       const classExists = await this.prisma.class.findUnique({
         where: { id }
       });
@@ -190,14 +172,11 @@ export class AdminService {
       if (!classExists) {
         throw new Error(`Class with id ${id} not found`);
       }
-
-      // Get all related exams first
       const exams = await this.prisma.exam.findMany({
         where: { classId: id },
         select: { id: true }
       });
 
-      // Delete all session participants for sessions related to these exams
       const sessions = await this.prisma.session.findMany({
         where: {
           examId: {
@@ -259,7 +238,6 @@ export class AdminService {
         where: { classId: id }
       });
 
-      // Update students to remove class reference
       await this.prisma.user.updateMany({
         where: { classId: id },
         data: { classId: null }
@@ -299,7 +277,6 @@ export class AdminService {
 
   async deleteExam(id: string) {
     try {
-      // First check if exam exists
       const examExists = await this.prisma.exam.findUnique({
         where: { id }
       });
@@ -308,14 +285,12 @@ export class AdminService {
         throw new Error(`Exam with id ${id} not found`);
       }
 
-      // Get all sessions for this exam
       const sessions = await this.prisma.session.findMany({
         where: { examId: id },
         select: { id: true }
       });
 
       if (sessions.length > 0) {
-        // Delete session participants
         await this.prisma.sessionParticipant.deleteMany({
           where: {
             sessionId: {
@@ -404,8 +379,6 @@ export class AdminService {
         where: { sessionId: id },
         select: { studentId: true }
       });
-
-      // Delete answers for this session
       if (participants.length > 0) {
         await this.prisma.answer.deleteMany({
           where: {
@@ -417,17 +390,14 @@ export class AdminService {
         });
       }
 
-      // Delete session participants
       await this.prisma.sessionParticipant.deleteMany({
         where: { sessionId: id }
       });
 
-      // Delete proctoring events
       await this.prisma.proctoringEvent.deleteMany({
         where: { sessionId: id }
       });
 
-      // Finally delete the session
       return await this.prisma.session.delete({
         where: { id }
       });
