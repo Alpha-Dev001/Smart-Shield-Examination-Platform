@@ -1,7 +1,7 @@
 #  SMESH Smart Shield Examination Platform
 
 <div align="center">
-**Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring**
+###**Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring**
 
 </div>
 
@@ -16,21 +16,21 @@ SmEsh Smart Shield is a **production-ready examination platform** that transform
 ## **Core Capabilities**
 
 ### **Advanced Proctoring System**
-- ** Live Monitoring** - Real-time student tracking with WebSocket-based updates
-- ** Browser Lockdown** - Fullscreen enforcement with comprehensive security controls
-- ** Intelligent Detection** - Automatic violation flagging (tab switching, copy/paste, DevTools)
-- ** Emergency Controls** - Instant session termination capabilities
+-  Live Monitoring - Real-time student tracking with WebSocket-based updates
+-  Browser Lockdown - Fullscreen enforcement with comprehensive security controls
+-  Intelligent Detection - Automatic violation flagging (tab switching, copy/paste, DevTools)
+-  Emergency Controls - Instant session termination capabilities
 
 ### **Multi-Role Ecosystem**
-- ** Admin Dashboard** - User management, system analytics, audit trails
-- ** Teacher Dashboard** - Test creation, live proctoring, detailed analytics
-- ** Student Dashboard** - Available tests, exam sessions, performance insights
+-  Admin Dashboard - User management, system analytics, audit trails
+-  Teacher Dashboard - Test creation, live proctoring, detailed analytics
+-  Student Dashboard - Available tests, exam sessions, performance insights
 
 ###  **Enterprise Security**
-- ** JWT Authentication** - Dual-token system with role-based access control
-- ** Input Validation** - Comprehensive Zod schema validation
-- ** Rate Limiting** - Advanced API protection mechanisms
-- ** Audit Logging** - Complete activity tracking for compliance
+-  JWT Authentication - Dual-token system with role-based access control
+-  Input Validation - Comprehensive Zod schema validation
+-  Rate Limiting - Advanced API protection mechanisms
+-  Audit Logging - Complete activity tracking for compliance
 
 ---
 
@@ -111,22 +111,22 @@ cd ../frontend && npm run dev  # Frontend on port 5173
 ## **Key Features**
 
 ### ** Examination Management**
-- **Multiple Question Types** - Multiple choice, essays, programming problems
-- **Automated Grading** - Instant scoring with detailed feedback
-- **Time Controls** - Flexible exam duration and scheduling
-- **Question Banks** - Reusable question libraries
+- Multiple Question Types - Multiple choice, essays, programming problems
+- Automated Grading - Instant scoring with detailed feedback
+- Time Controls - Flexible exam duration and scheduling
+- Question Banks - Reusable question libraries
 
 ### ** User Management**
-- **Role-Based Access** - Granular permissions for Admin/Teacher/Student
-- **Class Organization** - Hierarchical class and student management
-- **Profile Management** - Comprehensive user profiles and settings
-- **Bulk Operations** - Efficient user import and management tools
+- Role-Based Access - Granular permissions for Admin/Teacher/Student
+- Class Organization - Hierarchical class and student management
+- Profile Management - Comprehensive user profiles and settings
+- Bulk Operations - Efficient user import and management tools
 
 ### ** Analytics & Reporting**
-- **Performance Analytics** - Detailed exam statistics and insights
-- **Violation Reports** - Comprehensive proctoring violation tracking
-- **Progress Tracking** - Student performance over time
-- **Export Capabilities** - Data export for external analysis
+- Performance Analytics** - Detailed exam statistics and insights
+- Violation Reports - Comprehensive proctoring violation tracking
+- Progress Tracking - Student performance over time
+- Export Capabilities - Data export for external analysis
 
 ---
 
@@ -142,10 +142,10 @@ cd ../frontend && npm run dev  # Frontend on port 5173
 | **DevTools Detection** | Identifies developer tools usage | Window dimension monitoring |
 
 ### **Data Protection**
-- ** End-to-End Encryption** - Secure data transmission
-- ** GDPR Compliance** - Privacy-first design principles
-- ** Audit Trails** - Complete activity logging
-- ** Intrusion Detection** - Advanced threat monitoring
+-  End-to-End Encryption - Secure data transmission
+-  GDPR Compliance - Privacy-first design principles
+-  Audit Trails - Complete activity logging
+-  Intrusion Detection - Advanced threat monitoring
 
 ---
 
@@ -163,42 +163,6 @@ cd ../frontend && npm run dev  # Frontend on port 5173
 </div>
 
 ---
-
-## **Use Cases**
-
-### **Educational Institutions**
-- ** Universities** - Large-scale remote examinations
-- ** K-12 Schools** - Secure classroom assessments
-- ** Corporate Training** - Employee certification programs
-- ** Online Learning** - MOOC and e-learning platforms
-
-### **Exam Types**
-- ** Academic Tests** - Regular coursework assessments
-- ** Final Examinations** - High-stakes university exams
-- ** Certification Tests** - Professional licensing exams
-- ** Compliance Training** - Mandatory workplace assessments
-
----
-
-## **Contributing**
-
-We welcome contributions from the community! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### **Development Workflow**
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
----
-
-## **License & Support**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-<div align="center">
 
 **⭐ Star this repository if it helped you!**
 
