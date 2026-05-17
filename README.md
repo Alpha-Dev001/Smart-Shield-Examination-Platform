@@ -1,9 +1,6 @@
 #  SMESH Smart Shield Examination Platform
 
 <div align="center">
-
-![SmEsh Logo](https://img.shields.io/badge/SmEsh-Smart%20Shield-blue?style=for-the-badge&logo=shield)
-
 **Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring**
 
 </div>
