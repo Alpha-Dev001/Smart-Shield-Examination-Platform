@@ -1,4 +1,4 @@
-# 🛡️ SMESH Smart Shield Examination Platform
+#  SMESH Smart Shield Examination Platform
 
 <div align="center">
 
