@@ -1,7 +1,7 @@
 #  SMESH Smart Shield Examination Platform
 
 <div >
-Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring
+Enterprise-Grade Secure Online Examination System with Advanced Live Proctoring.
 
 </div>
 
